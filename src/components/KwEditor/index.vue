@@ -24,6 +24,10 @@ export default {
     initContent: {
       type: String,
       default: ''
+    },
+    initKey: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -33,7 +37,8 @@ export default {
         // 如果需要上传功能,找后端小伙伴要服务器接口地址
         // serverUrl: `${config.baseUrl}/ueditor/controller.php`,
         // 你的UEditor资源存放的路径,相对于打包后的index.html
-        UEDITOR_HOME_URL: './static/UEditor/',
+        // UEDITOR_HOME_URL: './admin/UEditor/',
+        UEDITOR_HOME_URL: './UEditor/',
         // 是否启用元素路径，默认是true显示
         elementPathEnabled: false,
         // 编辑器不自动被内容撑高
@@ -94,7 +99,7 @@ export default {
   watch: {
     content: {
       handler: function (val, oldVal) {
-        this.$emit('contentChange', val)
+        this.$emit('contentChange', val, this.initKey)
       }
     },
     initContent: {
