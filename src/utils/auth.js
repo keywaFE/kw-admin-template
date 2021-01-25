@@ -1,5 +1,6 @@
 // import Cookies from 'js-cookie'
 import { refreshToken } from '../api/apis'
+import router from '../router'
 import store from '@/store'
 
 const TokenKey = 'access_token'
@@ -58,6 +59,10 @@ export function checkToken() {
         setStorage(newToken)
         store.commit('SET_TOKEN', res.access_token)
         resolve(res.access_token)
+      }).catch(e => {
+        removeToken()
+        location.reload()
+        router.push('/login')
       })
     } else {
       resolve(window.localStorage.getItem(TokenKey))

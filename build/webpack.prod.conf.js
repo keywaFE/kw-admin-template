@@ -5,12 +5,12 @@ const HTMLPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-const UglifyJsParallelPlugin = require('webpack-parallel-uglify-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const config = require('./config')
 // const cpuCount = require('os').cpus().length
 // 获取入口
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 // 抽取css为独立文件
@@ -18,22 +18,6 @@ const miniCssExtractPlugin = new MiniCssExtractPlugin({
   filename: 'css/[name].[chunkhash:8].css'
 })
 
-// 压缩js代码
-const uglifyJs = new UglifyJsParallelPlugin({
-  cacheDir: '.cache/',
-  uglifyJS: {
-    output: {
-      comments: false,
-      beautify: false
-    },
-    compress: {
-      warnings: false,
-      drop_console: false,
-      collapse_vars: true,
-      reduce_vars: true
-    }
-  }
-})
 
 // 根据入口循环设置htmlplugin
 const htmlPlugins = [
@@ -103,8 +87,10 @@ module.exports = webpackMerge(baseConfig, {
     runtimeChunk: {
       name: 'manifest'
     },
+    minimize: true,
     minimizer: [
-      uglifyJs,
+      new TerserPlugin(),
+      // uglifyJs,
       new OptimizeCSSPlugin({
         cssProcessorOptions: {
           // 避免 cssnano 重新计算 z-index

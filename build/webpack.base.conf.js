@@ -50,7 +50,6 @@ module.exports = {
       },
       {
         test: /.js$/,
-        // loader: 'babel-loader',
         loader: 'happypack/loader?id=happy-babel',
         include: [resolve('src')],
         exclude: [path.join(__dirname, '../node_modules')]
@@ -64,10 +63,10 @@ module.exports = {
         }
       },
       {
-        test: /.vue$/,
+        test: /\.vue$/,
         loader: 'vue-loader',
-        include: [resolve('src')],
-        exclude: [path.join(__dirname, '../node_modules')]
+        include: [resolve('src'), path.join(__dirname, '../node_modules/vue-ueditor-wrap')]
+        // exclude: [path.join(__dirname, '../node_modules')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -116,10 +115,10 @@ module.exports = {
     ]),
     ...(config.common.needDll
       ? [
-          new webpack.DllReferencePlugin({
-            manifest: require('../dll/vue.dll.manifest.json')
-          })
-        ]
+        new webpack.DllReferencePlugin({
+          manifest: require('../dll/vue.dll.manifest.json')
+        })
+      ]
       : []),
     new VueLoaderPlugin()
   ]
